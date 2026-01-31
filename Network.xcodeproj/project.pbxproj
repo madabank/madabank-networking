@@ -277,7 +277,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = art.madabank.network;
+				PRODUCT_BUNDLE_IDENTIFIER = online.darisadam.network;
 				PRODUCT_NAME = Network;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -308,7 +308,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = art.madabank.network.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = online.darisadam.network.tests;
 				PRODUCT_NAME = NetworkTests;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -338,7 +338,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = art.madabank.network;
+				PRODUCT_BUNDLE_IDENTIFIER = online.darisadam.network;
 				PRODUCT_NAME = Network;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -365,7 +365,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = art.madabank.network.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = online.darisadam.network.tests;
 				PRODUCT_NAME = NetworkTests;
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
