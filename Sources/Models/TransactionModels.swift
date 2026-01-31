@@ -51,6 +51,13 @@ public enum TransactionStatus: String, Codable {
     }
 }
 
+public struct TransactionListResponse: Decodable {
+    public let transactions: [Transaction]
+    public let total: Int
+    public let limit: Int
+    public let offset: Int
+}
+
 public struct TransferRequest: Encodable {
     public let fromAccountId: String
     public let toAccountId: String

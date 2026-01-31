@@ -1,12 +1,17 @@
 import Foundation
 
+public struct AccountListResponse: Decodable {
+    public let accounts: [Account]
+    public let total: Int
+}
+
 public struct Account: Codable {
     public let id: String
-    public let accountNumber: String
-    public let accountType: AccountType
-    public let balance: Decimal
-    public let currency: String
-    public let status: AccountStatus
+    public let accountNumber: String? 
+    public let accountType: AccountType?
+    public let balance: Decimal?
+    public let currency: String?
+    public let status: AccountStatus?
     
     enum CodingKeys: String, CodingKey {
         case id, balance, currency, status
@@ -62,12 +67,16 @@ public struct UpdateAccountStatusRequest: Encodable {
 }
 
 public struct AccountBalance: Decodable {
+    public let accountId: String
+    public let accountNumber: String
     public let balance: Decimal
     public let currency: String
-    public let asOfDate: Date
+    public let asOfDate: String
     
     enum CodingKeys: String, CodingKey {
         case balance, currency
+        case accountId = "account_id"
+        case accountNumber = "account_number"
         case asOfDate = "as_of_date"
     }
 }

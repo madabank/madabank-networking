@@ -1,21 +1,25 @@
 import Foundation
 
+public struct CardListResponse: Decodable {
+    public let cards: [Card]
+}
+
 public struct Card: Codable {
     public let id: String
-    public let accountId: String
-    public let maskedNumber: String
-    public let type: CardType
-    public let status: CardStatus
-    public let expiryDate: String
-    public let holderName: String
-    public let dailyLimit: Decimal
+    public let accountId: String?
+    public let maskedNumber: String?
+    public let type: CardType?
+    public let status: CardStatus?
+    public let expiryDate: String?
+    public let holderName: String?
+    public let dailyLimit: Decimal?
     
     enum CodingKeys: String, CodingKey {
         case id, status, type
         case accountId = "account_id"
-        case maskedNumber = "masked_number"
+        case maskedNumber = "card_number_masked" // Updated key
         case expiryDate = "expiry_date"
-        case holderName = "holder_name"
+        case holderName = "card_holder_name" // Updated Key? Docs say card_holder_name in request, assuming consistency
         case dailyLimit = "daily_limit"
     }
 }
@@ -68,9 +72,24 @@ public struct IssueCardRequest: Encodable {
     }
 }
 
+public struct UpdateCardRequest: Encodable {
+    public let status: String?
+    public let dailyLimit: Decimal?
+    
+    public init(status: String? = nil, dailyLimit: Decimal? = nil) {
+        self.status = status
+        self.dailyLimit = dailyLimit
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case status
+        case dailyLimit = "daily_limit"
+    }
+}
+
 public struct CardDetailsRequest: Encodable {
     public let cardId: String
-    public let password: String // Encrypted if E2EE is active
+    public let password: String 
     
     public init(cardId: String, password: String) {
         self.cardId = cardId
@@ -84,7 +103,15 @@ public struct CardDetailsRequest: Encodable {
 }
 
 public struct CardDetailsResponse: Decodable {
-    public let pan: String
+    public let cardNumber: String
     public let cvv: String
-    public let expiry: String
+    public let expiryMonth: Int
+    public let expiryYear: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case cvv
+        case cardNumber = "card_number"
+        case expiryMonth = "expiry_month"
+        case expiryYear = "expiry_year"
+    }
 }

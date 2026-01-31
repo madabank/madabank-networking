@@ -25,7 +25,7 @@ public enum MadaEndpoint: APIEndpoint {
     case closeAccount(id: String)
     
     // Transactions
-    case getTransactions(accountId: String, limit: Int?, offset: Int?)
+    case getTransactions(accountId: String, limit: Int? = 20, offset: Int? = 0, startDate: String? = nil, endDate: String? = nil, type: String? = nil)
     case getTransaction(id: String)
     case transfer(TransferRequest)
     case deposit(DepositRequest)
@@ -33,9 +33,10 @@ public enum MadaEndpoint: APIEndpoint {
     case resolveQR(ResolveQRRequest)
     
     // Cards
-    case getCards(accountId: String?)
+    case getCards(accountId: String)
     case issueCard(IssueCardRequest)
     case getCardDetails(CardDetailsRequest)
+    case updateCard(id: String, request: UpdateCardRequest)
     case blockCard(id: String)
     case deleteCard(id: String)
     
@@ -71,6 +72,7 @@ public enum MadaEndpoint: APIEndpoint {
             
         case .getCards, .issueCard: return "/cards"
         case .getCardDetails: return "/cards/details"
+        case .updateCard(let id, _): return "/cards/\(id)"
         case .blockCard(let id): return "/cards/\(id)/block"
         case .deleteCard(let id): return "/cards/\(id)"
             
@@ -90,7 +92,8 @@ public enum MadaEndpoint: APIEndpoint {
         case .getProfile, .getAccounts, .getAccount, .getAccountBalance, .getTransactions, .getTransaction, .getCards, .getPublicKey, .getHealth, .getVersion: return .get
             
         case .updateProfile: return .put
-        case .updateAccount: return .patch // or PUT depending on implementation, prompt said PATCH
+        case .updateAccount: return .patch
+        case .updateCard: return .patch // Added
         
         case .deleteProfile, .closeAccount, .deleteCard: return .delete
         }
@@ -98,17 +101,17 @@ public enum MadaEndpoint: APIEndpoint {
     
     public var parameters: Parameters? {
         switch self {
-        case .getTransactions(let accountId, let limit, let offset):
+        case .getTransactions(let accountId, let limit, let offset, let startDate, let endDate, let type):
             var params: Parameters = ["account_id": accountId]
-            if letlimit = limit { params["limit"] = limit }
+            if let limit = limit { params["limit"] = limit }
             if let offset = offset { params["offset"] = offset }
+            if let startDate = startDate { params["start_date"] = startDate }
+            if let endDate = endDate { params["end_date"] = endDate }
+            if let type = type { params["type"] = type }
             return params
             
         case .getCards(let accountId):
-            if let accountId = accountId {
-                return ["account_id": accountId]
-            }
-            return nil
+            return ["account_id": accountId]
             
         default:
             return nil
@@ -134,6 +137,7 @@ public enum MadaEndpoint: APIEndpoint {
             
         case .issueCard(let req): return req
         case .getCardDetails(let req): return req
+        case .updateCard(_, let req): return req
             
         default: return nil
         }
