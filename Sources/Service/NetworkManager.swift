@@ -30,7 +30,7 @@ public class NetworkManager: APIClientProtocol {
         self.accessToken = nil
     }
     
-    public func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T {
+    public func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T {
         let request = try asURLRequest(endpoint)
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -47,7 +47,7 @@ public class NetworkManager: APIClientProtocol {
         }
     }
     
-    public func requestVoid(_ endpoint: APIEndpoint) async throws {
+    public func requestVoid(_ endpoint: Endpoint) async throws {
         let request = try asURLRequest(endpoint)
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -64,11 +64,11 @@ public class NetworkManager: APIClientProtocol {
         }
     }
     
-    private func asURLRequest(_ endpoint: APIEndpoint) throws -> URLRequestConvertible {
-        if let madaEndpoint = endpoint as? MadaEndpoint {
-            return madaEndpoint
+    private func asURLRequest(_ endpoint: Endpoint) throws -> URLRequestConvertible {
+        if let apiEndpoint = endpoint as? APIEndpoint {
+            return apiEndpoint
         } else {
-            // If it's a generic APIEndpoint, we need to construct URLRequest manually (basic support)
+            // If it's a generic Endpoint, we need to construct URLRequest manually (basic support)
              throw APIError.invalidURL
         }
     }

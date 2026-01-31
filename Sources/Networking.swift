@@ -44,21 +44,23 @@ public enum APIError: Error {
 // MARK: - API Client Protocol
 
 public protocol APIClientProtocol {
-    func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T
+    func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T
+    func requestVoid(_ endpoint: Endpoint) async throws
 }
 
-// MARK: - API Endpoint
+// MARK: - API Endpoint Protocol
 
-public protocol APIEndpoint {
+public protocol Endpoint {
     var baseURL: String { get }
     var path: String { get }
     var method: HTTPMethod { get }
     var headers: HTTPHeaders? { get }
     var parameters: Parameters? { get }
+    var body: Encodable? { get }
     var encoding: ParameterEncoding { get }
 }
 
-public extension APIEndpoint {
+public extension Endpoint {
     var baseURL: String {
         // TODO: Configure from environment
         return "https://api.madabank.art"

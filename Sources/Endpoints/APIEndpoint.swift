@@ -1,15 +1,16 @@
+```swift
 import Foundation
 import Alamofire
 
 /// Defines all API endpoints for Madabank
-public enum MadaEndpoint: APIEndpoint {
+public enum APIEndpoint: Endpoint {
     
     // Auth
     case login(LoginRequest)
     case register(RegisterRequest)
     case refreshToken(RefreshTokenRequest)
     case forgotPassword(ForgotPasswordRequest)
-    case resetPassword(ResetPasswordRequest)
+    case resetPassword(ResetRequest)
     
     // User
     case getProfile
@@ -152,7 +153,7 @@ public enum MadaEndpoint: APIEndpoint {
 }
 
 // Extension to help with Alamofire request creation
-extension MadaEndpoint: URLRequestConvertible {
+extension APIEndpoint: URLRequestConvertible {
     public func asURLRequest() throws -> URLRequest {
         let url = try baseURL.asURL()
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
