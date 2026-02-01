@@ -5,7 +5,13 @@ public class NetworkManager: APIClientProtocol {
     
     public static let shared = NetworkManager()
     
-    private let session: Session
+    private lazy var session: Session = {
+        let interceptor = AuthInterceptor { [weak self] in
+            return self?.accessToken
+        }
+        return Session(interceptor: interceptor)
+    }()
+    
     private var accessToken: String?
     
     // Generic error response structure
@@ -13,14 +19,7 @@ public class NetworkManager: APIClientProtocol {
         let message: String
     }
     
-    private init() {
-        // Initialize interceptor
-        let interceptor = AuthInterceptor { [weak self] in
-            return self?.accessToken
-        }
-        
-        self.session = Session(interceptor: interceptor)
-    }
+    private init() {}
     
     public func setAccessToken(_ token: String) {
         self.accessToken = token

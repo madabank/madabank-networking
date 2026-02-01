@@ -1,14 +1,14 @@
 import ProjectDescription
 
 let project = Project(
-    name: "Network",
+    name: "Networking",
     targets: [
         .target(
-            name: "Network",
+            name: "Networking",
             destinations: .iOS,
             product: .framework,
-            bundleId: "online.darisadam.network",
-            deploymentTargets: .iOS("17.0"),
+            bundleId: "online.darisadam.networking",
+            deploymentTargets: .iOS("15.0"),
             infoPlist: .default,
             sources: ["Sources/**"],
             dependencies: [
@@ -17,14 +17,14 @@ let project = Project(
             ]
         ),
         .target(
-            name: "NetworkTests",
+            name: "NetworkingTests",
             destinations: .iOS,
             product: .unitTests,
-            bundleId: "online.darisadam.network.tests",
-            deploymentTargets: .iOS("17.0"),
+            bundleId: "online.darisadam.networking.tests",
+            deploymentTargets: .iOS("15.0"),
             infoPlist: .default,
             sources: ["Tests/**"],
-            dependencies: [.target(name: "Network")]
+            dependencies: [.target(name: "Networking")]
         )
     ]
 )

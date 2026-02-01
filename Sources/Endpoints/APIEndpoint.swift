@@ -1,4 +1,4 @@
-```swift
+
 import Foundation
 import Alamofire
 
@@ -10,7 +10,7 @@ public enum APIEndpoint: Endpoint {
     case register(RegisterRequest)
     case refreshToken(RefreshTokenRequest)
     case forgotPassword(ForgotPasswordRequest)
-    case resetPassword(ResetRequest)
+    case resetPassword(ResetPasswordRequest)
     
     // User
     case getProfile
