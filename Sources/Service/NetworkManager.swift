@@ -7,7 +7,7 @@ public class NetworkManager: APIClientProtocol {
     
     private lazy var session: Session = {
         let interceptor = AuthInterceptor { [weak self] in
-            return self?.accessToken
+            self?.accessToken
         }
         return Session(interceptor: interceptor)
     }()

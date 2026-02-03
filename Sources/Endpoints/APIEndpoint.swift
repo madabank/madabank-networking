@@ -1,4 +1,3 @@
-
 import Foundation
 import Alamofire
 
@@ -11,6 +10,7 @@ public enum APIEndpoint: Endpoint {
     case refreshToken(RefreshTokenRequest)
     case forgotPassword(ForgotPasswordRequest)
     case resetPassword(ResetPasswordRequest)
+    case changePassword(ChangePasswordRequest)
     
     // User
     case getProfile
@@ -26,25 +26,10 @@ public enum APIEndpoint: Endpoint {
     case closeAccount(id: String)
     
     // Transactions
-    case getTransactions(accountId: String, limit: Int? = 20, offset: Int? = 0, startDate: String? = nil, endDate: String? = nil, type: String? = nil)
+    case getTransactions(GetTransactionsRequest)
     case getTransaction(id: String)
     case transfer(TransferRequest)
-    case deposit(DepositRequest)
-    case withdraw(WithdrawRequest)
-    case resolveQR(ResolveQRRequest)
-    
-    // Cards
-    case getCards(accountId: String)
-    case issueCard(IssueCardRequest)
-    case getCardDetails(CardDetailsRequest)
-    case updateCard(id: String, request: UpdateCardRequest)
-    case blockCard(id: String)
-    case deleteCard(id: String)
-    
-    // Security / System
-    case getPublicKey
-    case getHealth
-    case getVersion
+
     
     // MARK: - Properties
     
@@ -55,6 +40,7 @@ public enum APIEndpoint: Endpoint {
         case .refreshToken: return "/auth/refresh"
         case .forgotPassword: return "/auth/forgot-password"
         case .resetPassword: return "/auth/reset-password"
+        case .changePassword: return "/auth/change-password"
             
         case .getProfile, .updateProfile, .deleteProfile: return "/users/profile"
             
@@ -85,7 +71,7 @@ public enum APIEndpoint: Endpoint {
     
     public var method: HTTPMethod {
         switch self {
-        case .login, .register, .refreshToken, .forgotPassword, .resetPassword: return .post
+        case .login, .register, .refreshToken, .forgotPassword, .resetPassword, .changePassword: return .post
         case .createAccount: return .post
         case .transfer, .deposit, .withdraw, .resolveQR: return .post
         case .issueCard, .getCardDetails, .blockCard: return .post
@@ -100,15 +86,32 @@ public enum APIEndpoint: Endpoint {
         }
     }
     
+    case deposit(DepositRequest)
+    case withdraw(WithdrawRequest)
+    case resolveQR(ResolveQRRequest)
+    
+    // Cards
+    case getCards(accountId: String)
+    case issueCard(IssueCardRequest)
+    case getCardDetails(CardDetailsRequest)
+    case updateCard(id: String, request: UpdateCardRequest)
+    case blockCard(id: String)
+    case deleteCard(id: String)
+    
+    // Security / System
+    case getPublicKey
+    case getHealth
+    case getVersion
+        
     public var parameters: Parameters? {
         switch self {
-        case .getTransactions(let accountId, let limit, let offset, let startDate, let endDate, let type):
-            var params: Parameters = ["account_id": accountId]
-            if let limit = limit { params["limit"] = limit }
-            if let offset = offset { params["offset"] = offset }
-            if let startDate = startDate { params["start_date"] = startDate }
-            if let endDate = endDate { params["end_date"] = endDate }
-            if let type = type { params["type"] = type }
+        case .getTransactions(let req):
+            var params: Parameters = ["account_id": req.accountId]
+            if let limit = req.limit { params["limit"] = limit }
+            if let offset = req.offset { params["offset"] = offset }
+            if let startDate = req.startDate { params["start_date"] = startDate }
+            if let endDate = req.endDate { params["end_date"] = endDate }
+            if let type = req.type { params["type"] = type }
             return params
             
         case .getCards(let accountId):
@@ -118,6 +121,7 @@ public enum APIEndpoint: Endpoint {
             return nil
         }
     }
+
     
     public var body: Encodable? {
         switch self {
@@ -126,6 +130,7 @@ public enum APIEndpoint: Endpoint {
         case .refreshToken(let req): return req
         case .forgotPassword(let req): return req
         case .resetPassword(let req): return req
+        case .changePassword(let req): return req
             
         case .updateProfile(let req): return req
         case .createAccount(let req): return req

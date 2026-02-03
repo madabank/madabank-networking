@@ -111,3 +111,22 @@ public struct ResetPasswordRequest: Encodable {
 public struct ResetPasswordResponse: Decodable {
     public let message: String
 }
+
+public struct ChangePasswordRequest: Encodable {
+    public let oldPassword: String
+    public let newPassword: String
+    
+    public init(oldPassword: String, newPassword: String) {
+        self.oldPassword = oldPassword
+        self.newPassword = newPassword
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case oldPassword = "old_password"
+        case newPassword = "new_password"
+    }
+}
+
+public struct ChangePasswordResponse: Decodable {
+    public let message: String
+}

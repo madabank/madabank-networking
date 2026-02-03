@@ -58,6 +58,31 @@ public struct TransactionListResponse: Decodable {
     public let offset: Int
 }
 
+public struct GetTransactionsRequest: Encodable {
+    public let accountId: String
+    public let limit: Int?
+    public let offset: Int?
+    public let startDate: String?
+    public let endDate: String?
+    public let type: String?
+    
+    public init(accountId: String, limit: Int? = 20, offset: Int? = 0, startDate: String? = nil, endDate: String? = nil, type: String? = nil) {
+        self.accountId = accountId
+        self.limit = limit
+        self.offset = offset
+        self.startDate = startDate
+        self.endDate = endDate
+        self.type = type
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case limit, offset, type
+        case accountId = "account_id"
+        case startDate = "start_date"
+        case endDate = "end_date"
+    }
+}
+
 public struct TransferRequest: Encodable {
     public let fromAccountId: String
     public let toAccountId: String

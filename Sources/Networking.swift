@@ -63,15 +63,15 @@ public protocol Endpoint {
 public extension Endpoint {
     var baseURL: String {
         // TODO: Configure from environment
-        return "https://api.madabank.art"
+        "https://api.madabank.art"
     }
     
     var headers: HTTPHeaders? {
-        return nil
+        nil
     }
     
     var parameters: Parameters? {
-        return nil
+        nil
     }
     
     var encoding: ParameterEncoding {
