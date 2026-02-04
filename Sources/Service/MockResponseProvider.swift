@@ -35,7 +35,8 @@ public class MockResponseProvider: MockResponseProviderProtocol {
     }
     
     private func loadJSON(filename: String) -> Data? {
-        guard let url = Bundle.module.url(forResource: filename, withExtension: "json") else {
+        let bundle = Bundle(for: MockResponseProvider.self)
+        guard let url = bundle.url(forResource: filename, withExtension: "json") else {
             print("MockResponseProvider: File \(filename).json not found in Bundle.")
             return nil
         }
