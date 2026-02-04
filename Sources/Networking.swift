@@ -62,8 +62,7 @@ public protocol Endpoint {
 
 public extension Endpoint {
     var baseURL: String {
-        // TODO: Configure from environment
-        "https://api.madabank.art"
+        Environment.current.baseURL
     }
     
     var headers: HTTPHeaders? {

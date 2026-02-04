@@ -5,7 +5,7 @@ let project = Project(
     targets: [
         .target(
             name: "Networking",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .framework,
             bundleId: "online.darisadam.networking",
             deploymentTargets: .iOS("15.0"),
@@ -18,7 +18,7 @@ let project = Project(
         ),
         .target(
             name: "NetworkingTests",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .unitTests,
             bundleId: "online.darisadam.networking.tests",
             deploymentTargets: .iOS("15.0"),

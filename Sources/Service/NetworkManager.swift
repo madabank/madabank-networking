@@ -14,6 +14,8 @@ public class NetworkManager: APIClientProtocol {
     
     private var accessToken: String?
     
+    private let mockProvider: MockResponseProviderProtocol = MockResponseProvider()
+    
     // Generic error response structure
     struct ErrorResponse: Decodable {
         let message: String
@@ -30,6 +32,24 @@ public class NetworkManager: APIClientProtocol {
     }
     
     public func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T {
+        // Mocking Interception
+        if Environment.current.isMockingEnabled {
+            if let data = mockProvider.mockData(for: endpoint) {
+                // Simulate network delay
+                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s
+                do {
+                    return try JSONDecoder().decode(T.self, from: data)
+                } catch {
+                    throw APIError.decodingError(error)
+                }
+            } else {
+                 // Fallback or error if mock not found
+                 print("NetworkManager: No mock data found for endpoint: \(endpoint)")
+                 // Ideally we might want to throw an error or fall through to network if we wanted mixed mode
+                 throw APIError.networkError(NSError(domain: "NetworkManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Mock data not found"]))
+            }
+        }
+        
         let request = try asURLRequest(endpoint)
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -47,6 +67,20 @@ public class NetworkManager: APIClientProtocol {
     }
     
     public func requestVoid(_ endpoint: Endpoint) async throws {
+        // Mocking Interception
+        if Environment.current.isMockingEnabled {
+             // For void requests, existence of mock data (or just success) is enough
+             // We can check if we have a mock file for it if we want to simulate success/failure
+             // For now, let's assume success if we are in mock mode for void requests, or check provider
+             if mockProvider.mockData(for: endpoint) != nil {
+                 try? await Task.sleep(nanoseconds: 500_000_000)
+                 return
+             }
+             // Fallthrough or return success? Let's return success for now for simple void mocks
+             try? await Task.sleep(nanoseconds: 500_000_000)
+             return
+        }
+        
         let request = try asURLRequest(endpoint)
         
         return try await withCheckedThrowingContinuation { continuation in

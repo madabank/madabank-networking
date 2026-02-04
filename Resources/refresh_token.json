@@ -1,0 +1,13 @@
+{
+    "token": "refreshed_access_token_789",
+    "refresh_token": "refreshed_refresh_token_012",
+    "expires_at": "2026-12-31T23:59:59Z",
+    "user": {
+        "id": "u1",
+        "email": "dev@madabank.art",
+        "first_name": "John",
+        "last_name": "Doe",
+        "kyc_status": "verified",
+        "is_active": true
+    }
+}

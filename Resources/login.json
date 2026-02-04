@@ -1,0 +1,15 @@
+{
+  "token": "mock_access_token_123",
+  "refresh_token": "mock_refresh_token_456",
+  "expires_at": "2026-12-31T23:59:59Z",
+  "user": {
+    "id": "u1",
+    "email": "dev@madabank.art",
+    "first_name": "John",
+    "last_name": "Doe",
+    "phone": "+1234567890",
+    "kyc_status": "verified",
+    "is_active": true,
+    "join_date": "2025-01-01T10:00:00Z"
+  }
+}

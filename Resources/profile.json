@@ -1,0 +1,10 @@
+{
+    "id": "u1",
+    "email": "dev@madabank.art",
+    "first_name": "John",
+    "last_name": "Doe",
+    "phone": "+1234567890",
+    "kyc_status": "verified",
+    "join_date": "2025-01-01T10:00:00Z",
+    "is_active": true
+}

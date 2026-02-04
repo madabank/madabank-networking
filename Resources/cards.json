@@ -1,0 +1,24 @@
+{
+    "cards": [
+        {
+            "id": "card_1",
+            "account_id": "acc_1",
+            "card_number_masked": "**** **** **** 1234",
+            "expiry_date": "12/28",
+            "card_holder_name": "JOHN DOE",
+            "daily_limit": 1000.00,
+            "status": "active",
+            "type": "debit"
+        },
+        {
+            "id": "card_2",
+            "account_id": "acc_2",
+            "card_number_masked": "**** **** **** 5678",
+            "expiry_date": "12/29",
+            "card_holder_name": "JOHN DOE",
+            "daily_limit": 5000.00,
+            "status": "active",
+            "type": "credit"
+        }
+    ]
+}

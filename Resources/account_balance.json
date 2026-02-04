@@ -1,0 +1,7 @@
+{
+    "account_id": "acc_1",
+    "account_number": "1234567890",
+    "balance": 5000.00,
+    "currency": "USD",
+    "as_of_date": "2025-01-01T12:00:00Z"
+}

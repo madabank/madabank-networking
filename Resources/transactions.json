@@ -1,0 +1,29 @@
+{
+    "transactions": [
+        {
+            "id": "tx_1",
+            "from_account_id": "acc_1",
+            "to_account_id": "acc_2",
+            "amount": 100.00,
+            "currency": "USD",
+            "type": "transfer",
+            "status": "completed",
+            "description": "Transfer to Checking",
+            "date": "2025-01-01T13:00:00Z"
+        },
+        {
+            "id": "tx_2",
+            "from_account_id": null,
+            "to_account_id": "acc_1",
+            "amount": 2000.00,
+            "currency": "USD",
+            "type": "deposit",
+            "status": "completed",
+            "description": "Salary Deposit",
+            "date": "2025-01-01T09:00:00Z"
+        }
+    ],
+    "total": 2,
+    "limit": 20,
+    "offset": 0
+}

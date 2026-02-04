@@ -1,0 +1,12 @@
+{
+    "id": "tx_3",
+    "from_account_id": "acc_1",
+    "to_account_id": "acc_2",
+    "amount": 50.00,
+    "currency": "USD",
+    "type": "transfer",
+    "status": "completed",
+    "description": "Lunch Payment",
+    "date": "2025-01-01T14:00:00Z",
+    "idempotency_key": "unique_key_456"
+}
