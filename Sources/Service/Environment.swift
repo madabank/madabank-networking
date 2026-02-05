@@ -11,7 +11,11 @@ public enum Environment {
         } else if ProcessInfo.processInfo.arguments.contains("-DEV_MODE") {
             return .dev
         } else {
+            #if targetEnvironment(simulator)
+            return .dev
+            #else
             return .prod
+            #endif
         }
     }
     

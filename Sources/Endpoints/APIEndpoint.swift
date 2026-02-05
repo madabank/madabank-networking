@@ -66,6 +66,10 @@ public enum APIEndpoint: Endpoint {
         case .getPublicKey: return "/security/public-key"
         case .getHealth: return "/health"
         case .getVersion: return "/version"
+            
+        case .getNotifications: return "/notifications"
+        case .markNotificationRead(let id): return "/notifications/\(id)/read"
+        case .markAllNotificationsRead: return "/notifications/read/all"
         }
     }
     
@@ -74,9 +78,9 @@ public enum APIEndpoint: Endpoint {
         case .login, .register, .refreshToken, .forgotPassword, .resetPassword, .changePassword: return .post
         case .createAccount: return .post
         case .transfer, .deposit, .withdraw, .resolveQR: return .post
-        case .issueCard, .getCardDetails, .blockCard: return .post
+        case .issueCard, .getCardDetails, .blockCard, .markNotificationRead, .markAllNotificationsRead: return .post
             
-        case .getProfile, .getAccounts, .getAccount, .getAccountBalance, .getTransactions, .getTransaction, .getCards, .getPublicKey, .getHealth, .getVersion: return .get
+        case .getProfile, .getAccounts, .getAccount, .getAccountBalance, .getTransactions, .getTransaction, .getCards, .getPublicKey, .getHealth, .getVersion, .getNotifications: return .get
             
         case .updateProfile: return .put
         case .updateAccount: return .patch
@@ -102,6 +106,11 @@ public enum APIEndpoint: Endpoint {
     case getPublicKey
     case getHealth
     case getVersion
+    
+    // Notifications
+    case getNotifications
+    case markNotificationRead(id: String)
+    case markAllNotificationsRead
         
     public var parameters: Parameters? {
         switch self {
