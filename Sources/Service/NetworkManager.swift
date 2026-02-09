@@ -38,8 +38,11 @@ public class NetworkManager: APIClientProtocol {
                 // Simulate network delay
                 try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s
                 do {
-                    return try JSONDecoder().decode(T.self, from: data)
+                    let decoder = JSONDecoder()
+                    decoder.dateDecodingStrategy = .iso8601
+                    return try decoder.decode(T.self, from: data)
                 } catch {
+                    print("NetworkManager Mock Decoding Error: \(error)")
                     throw APIError.decodingError(error)
                 }
             } else {

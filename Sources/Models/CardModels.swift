@@ -56,12 +56,16 @@ public struct IssueCardRequest: Encodable {
     public let cardHolderName: String
     public let cardType: String
     public let dailyLimit: Decimal
+    public let encryptedCardNumber: String
+    public let encryptedCVV: String
     
-    public init(accountId: String, cardHolderName: String, cardType: String, dailyLimit: Decimal) {
+    public init(accountId: String, cardHolderName: String, cardType: String, dailyLimit: Decimal, encryptedCardNumber: String, encryptedCVV: String) {
         self.accountId = accountId
         self.cardHolderName = cardHolderName
         self.cardType = cardType
         self.dailyLimit = dailyLimit
+        self.encryptedCardNumber = encryptedCardNumber
+        self.encryptedCVV = encryptedCVV
     }
     
     enum CodingKeys: String, CodingKey {
@@ -69,6 +73,8 @@ public struct IssueCardRequest: Encodable {
         case cardHolderName = "card_holder_name"
         case cardType = "card_type"
         case dailyLimit = "daily_limit"
+        case encryptedCardNumber = "encrypted_card_number"
+        case encryptedCVV = "encrypted_cvv"
     }
 }
 

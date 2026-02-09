@@ -28,6 +28,9 @@ public class MockResponseProvider: MockResponseProviderProtocol {
         case .getPublicKey: filename = "public_key"
         case .getHealth: filename = "health"
         case .getVersion: filename = "version"
+        case .getReady: filename = "ready"
+        case .getMetrics: filename = "metrics"
+        case .verify2FA: filename = "verify_2fa"
         default: return nil // Fallback or handle specific cases
         }
         

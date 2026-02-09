@@ -11,6 +11,7 @@ let project = Project(
             deploymentTargets: .iOS("15.0"),
             infoPlist: .default,
             sources: ["Sources/**"],
+            resources: ["Resources/**"],
             dependencies: [
                 .project(target: "Core", path: "../Core"),
                 .external(name: "Alamofire")
@@ -24,7 +25,12 @@ let project = Project(
             deploymentTargets: .iOS("15.0"),
             infoPlist: .default,
             sources: ["Tests/**"],
-            dependencies: [.target(name: "Networking")]
+            dependencies: [
+                .target(name: "Networking"),
+                .project(target: "Core", path: "../Core"),
+                .external(name: "RxSwift"),
+                .external(name: "RxCocoa")
+            ]
         )
     ]
 )

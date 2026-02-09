@@ -11,6 +11,7 @@ public enum APIEndpoint: Endpoint {
     case forgotPassword(ForgotPasswordRequest)
     case resetPassword(ResetPasswordRequest)
     case changePassword(ChangePasswordRequest)
+    case verify2FA(Verify2FARequest)
     
     // User
     case getProfile
@@ -29,6 +30,24 @@ public enum APIEndpoint: Endpoint {
     case getTransactions(GetTransactionsRequest)
     case getTransaction(id: String)
     case transfer(TransferRequest)
+    case deposit(DepositRequest)
+    case withdraw(WithdrawRequest)
+    case resolveQR(ResolveQRRequest)
+    
+    // Cards
+    case getCards(accountId: String)
+    case issueCard(IssueCardRequest)
+    case getCardDetails(CardDetailsRequest)
+    case updateCard(id: String, request: UpdateCardRequest)
+    case blockCard(id: String)
+    case deleteCard(id: String)
+    
+    // Security / System
+    case getPublicKey
+    case getHealth
+    case getReady
+    case getVersion
+    case getMetrics
 
     
     // MARK: - Properties
@@ -41,6 +60,7 @@ public enum APIEndpoint: Endpoint {
         case .forgotPassword: return "/auth/forgot-password"
         case .resetPassword: return "/auth/reset-password"
         case .changePassword: return "/auth/change-password"
+        case .verify2FA: return "/auth/2fa/verify"
             
         case .getProfile, .updateProfile, .deleteProfile: return "/users/profile"
             
@@ -65,52 +85,28 @@ public enum APIEndpoint: Endpoint {
             
         case .getPublicKey: return "/security/public-key"
         case .getHealth: return "/health"
+        case .getReady: return "/ready"
         case .getVersion: return "/version"
-            
-        case .getNotifications: return "/notifications"
-        case .markNotificationRead(let id): return "/notifications/\(id)/read"
-        case .markAllNotificationsRead: return "/notifications/read/all"
+        case .getMetrics: return "/metrics"
         }
     }
     
     public var method: HTTPMethod {
         switch self {
-        case .login, .register, .refreshToken, .forgotPassword, .resetPassword, .changePassword: return .post
+        case .login, .register, .refreshToken, .forgotPassword, .resetPassword, .changePassword, .verify2FA: return .post
         case .createAccount: return .post
         case .transfer, .deposit, .withdraw, .resolveQR: return .post
-        case .issueCard, .getCardDetails, .blockCard, .markNotificationRead, .markAllNotificationsRead: return .post
+        case .issueCard, .getCardDetails, .blockCard: return .post
             
-        case .getProfile, .getAccounts, .getAccount, .getAccountBalance, .getTransactions, .getTransaction, .getCards, .getPublicKey, .getHealth, .getVersion, .getNotifications: return .get
+        case .getProfile, .getAccounts, .getAccount, .getAccountBalance, .getTransactions, .getTransaction, .getCards, .getPublicKey, .getHealth, .getReady, .getVersion, .getMetrics: return .get
             
         case .updateProfile: return .put
         case .updateAccount: return .patch
-        case .updateCard: return .patch // Added
+        case .updateCard: return .patch
         
         case .deleteProfile, .closeAccount, .deleteCard: return .delete
         }
     }
-    
-    case deposit(DepositRequest)
-    case withdraw(WithdrawRequest)
-    case resolveQR(ResolveQRRequest)
-    
-    // Cards
-    case getCards(accountId: String)
-    case issueCard(IssueCardRequest)
-    case getCardDetails(CardDetailsRequest)
-    case updateCard(id: String, request: UpdateCardRequest)
-    case blockCard(id: String)
-    case deleteCard(id: String)
-    
-    // Security / System
-    case getPublicKey
-    case getHealth
-    case getVersion
-    
-    // Notifications
-    case getNotifications
-    case markNotificationRead(id: String)
-    case markAllNotificationsRead
         
     public var parameters: Parameters? {
         switch self {
@@ -140,6 +136,7 @@ public enum APIEndpoint: Endpoint {
         case .forgotPassword(let req): return req
         case .resetPassword(let req): return req
         case .changePassword(let req): return req
+        case .verify2FA(let req): return req
             
         case .updateProfile(let req): return req
         case .createAccount(let req): return req

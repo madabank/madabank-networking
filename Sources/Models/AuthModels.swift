@@ -5,10 +5,17 @@ import Foundation
 public struct LoginRequest: Encodable {
     public let email: String
     public let password: String?
+    public let encryptedPassword: String?
     
-    public init(email: String, password: String) {
+    public init(email: String, password: String? = nil, encryptedPassword: String? = nil) {
         self.email = email
         self.password = password
+        self.encryptedPassword = encryptedPassword
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case email, password
+        case encryptedPassword = "encrypted_password"
     }
 }
 
@@ -61,6 +68,13 @@ public struct AuthResponse: Decodable {
     public let refreshToken: String
     public let expiresAt: String // ISO String based on example
     public let user: UserProfile? // Optional as per example structure
+    
+    public init(token: String, refreshToken: String, expiresAt: String, user: UserProfile? = nil) {
+        self.token = token
+        self.refreshToken = refreshToken
+        self.expiresAt = expiresAt
+        self.user = user
+    }
     
     enum CodingKeys: String, CodingKey {
         case token = "token"
@@ -129,4 +143,14 @@ public struct ChangePasswordRequest: Encodable {
 
 public struct ChangePasswordResponse: Decodable {
     public let message: String
+}
+
+public struct Verify2FARequest: Encodable {
+    public let email: String
+    public let otp: String
+    
+    public init(email: String, otp: String) {
+        self.email = email
+        self.otp = otp
+    }
 }
