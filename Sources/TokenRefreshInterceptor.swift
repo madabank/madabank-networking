@@ -13,7 +13,7 @@ public class TokenRefreshInterceptor: RequestInterceptor {
     
     public init(
         tokenManager: TokenManager = .shared,
-        refreshURL: URL = URL(string: "https://api.madabank.art/auth/refresh")!
+        refreshURL: URL = URL(string: "https://api.madabank.art/auth/refresh")! // swiftlint:disable:this force_unwrapping
     ) {
         self.tokenManager = tokenManager
         self.refreshURL = refreshURL

@@ -29,6 +29,6 @@ public enum Environment {
     }
     
     public var isMockingEnabled: Bool {
-        return self == .dev || self == .test
+        self == .dev || self == .test
     }
 }

@@ -42,12 +42,12 @@ public class NetworkManager: APIClientProtocol {
                     decoder.dateDecodingStrategy = .iso8601
                     return try decoder.decode(T.self, from: data)
                 } catch {
-                    print("NetworkManager Mock Decoding Error: \(error)")
+
                     throw APIError.decodingError(error)
                 }
             } else {
                  // Fallback or error if mock not found
-                 print("NetworkManager: No mock data found for endpoint: \(endpoint)")
+
                  // Ideally we might want to throw an error or fall through to network if we wanted mixed mode
                  throw APIError.networkError(NSError(domain: "NetworkManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Mock data not found"]))
             }

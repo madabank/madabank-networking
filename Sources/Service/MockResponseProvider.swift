@@ -40,14 +40,14 @@ public class MockResponseProvider: MockResponseProviderProtocol {
     private func loadJSON(filename: String) -> Data? {
         let bundle = Bundle(for: MockResponseProvider.self)
         guard let url = bundle.url(forResource: filename, withExtension: "json") else {
-            // print("MockResponseProvider: File \(filename).json not found in Bundle.")
+            // Logger.debug("MockResponseProvider: File \(filename).json not found in Bundle.")
             return nil
         }
         
         do {
             return try Data(contentsOf: url)
         } catch {
-            // print("MockResponseProvider: Failed to load \(filename).json - \(error)")
+            // Logger.debug("MockResponseProvider: Failed to load \(filename).json - \(error)")
             return nil
         }
     }

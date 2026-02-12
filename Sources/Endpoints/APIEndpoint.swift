@@ -49,7 +49,6 @@ public enum APIEndpoint: Endpoint {
     case getVersion
     case getMetrics
 
-    
     // MARK: - Properties
     
     public var path: String {
@@ -127,7 +126,6 @@ public enum APIEndpoint: Endpoint {
         }
     }
 
-    
     public var body: Encodable? {
         switch self {
         case .login(let req): return req
