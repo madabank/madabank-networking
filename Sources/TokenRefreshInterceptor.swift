@@ -3,7 +3,7 @@ import Alamofire
 import Core
 
 /// Token refresh interceptor that automatically refreshes expired tokens
-public class TokenRefreshInterceptor: RequestInterceptor {
+public final class TokenRefreshInterceptor: RequestInterceptor, @unchecked Sendable {
     
     private let tokenManager: TokenManager
     private let refreshURL: URL

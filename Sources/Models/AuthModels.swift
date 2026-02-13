@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - Auth
 
-public struct LoginRequest: Encodable {
+public struct LoginRequest: Encodable, Sendable {
     public let email: String
     public let password: String?
     public let encryptedPassword: String?
@@ -19,7 +19,7 @@ public struct LoginRequest: Encodable {
     }
 }
 
-public struct RegisterRequest: Encodable {
+public struct RegisterRequest: Encodable, Sendable {
     public let email: String
     public let password: String
     public let firstName: String
@@ -44,7 +44,7 @@ public struct RegisterRequest: Encodable {
     }
 }
 
-public struct RegisterResponse: Decodable {
+public struct RegisterResponse: Decodable, Sendable {
     public let id: String
     public let email: String
     public let firstName: String
@@ -63,7 +63,7 @@ public struct RegisterResponse: Decodable {
     }
 }
 
-public struct AuthResponse: Decodable {
+public struct AuthResponse: Decodable, Sendable {
     public let token: String
     public let refreshToken: String
     public let expiresAt: String // ISO String based on example
@@ -84,7 +84,7 @@ public struct AuthResponse: Decodable {
     }
 }
 
-public struct RefreshTokenRequest: Encodable {
+public struct RefreshTokenRequest: Encodable, Sendable {
     public let refreshToken: String
     
     public init(refreshToken: String) {
@@ -96,16 +96,16 @@ public struct RefreshTokenRequest: Encodable {
     }
 }
 
-public struct ForgotPasswordRequest: Encodable {
+public struct ForgotPasswordRequest: Encodable, Sendable {
     public let email: String
     public init(email: String) { self.email = email }
 }
 
-public struct ForgotPasswordResponse: Decodable {
+public struct ForgotPasswordResponse: Decodable, Sendable {
     public let message: String
 }
 
-public struct ResetPasswordRequest: Encodable {
+public struct ResetPasswordRequest: Encodable, Sendable {
     public let email: String
     public let otp: String
     public let newPassword: String
@@ -122,11 +122,11 @@ public struct ResetPasswordRequest: Encodable {
     }
 }
 
-public struct ResetPasswordResponse: Decodable {
+public struct ResetPasswordResponse: Decodable, Sendable {
     public let message: String
 }
 
-public struct ChangePasswordRequest: Encodable {
+public struct ChangePasswordRequest: Encodable, Sendable {
     public let oldPassword: String
     public let newPassword: String
     
@@ -141,11 +141,11 @@ public struct ChangePasswordRequest: Encodable {
     }
 }
 
-public struct ChangePasswordResponse: Decodable {
+public struct ChangePasswordResponse: Decodable, Sendable {
     public let message: String
 }
 
-public struct Verify2FARequest: Encodable {
+public struct Verify2FARequest: Encodable, Sendable {
     public let email: String
     public let otp: String
     

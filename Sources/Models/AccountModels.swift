@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AccountListResponse: Decodable {
+public struct AccountListResponse: Decodable, Sendable {
     public let accounts: [Account]
     public let total: Int
     
@@ -10,7 +10,7 @@ public struct AccountListResponse: Decodable {
     }
 }
 
-public struct Account: Codable {
+public struct Account: Codable, Sendable {
     public let id: String
     public let accountNumber: String? 
     public let accountType: AccountType?
@@ -34,7 +34,7 @@ public struct Account: Codable {
     }
 }
 
-public enum AccountType: String, Codable {
+public enum AccountType: String, Codable, Sendable {
     case savings
     case checking
     case business
@@ -47,7 +47,7 @@ public enum AccountType: String, Codable {
     }
 }
 
-public enum AccountStatus: String, Codable {
+public enum AccountStatus: String, Codable, Sendable {
     case active
     case frozen
     case closed
@@ -60,7 +60,7 @@ public enum AccountStatus: String, Codable {
     }
 }
 
-public struct CreateAccountRequest: Encodable {
+public struct CreateAccountRequest: Encodable, Sendable {
     public let accountType: String
     public let currency: String
     
@@ -75,12 +75,12 @@ public struct CreateAccountRequest: Encodable {
     }
 }
 
-public struct UpdateAccountStatusRequest: Encodable {
+public struct UpdateAccountStatusRequest: Encodable, Sendable {
     public let status: String
     public init(status: String) { self.status = status }
 }
 
-public struct AccountBalance: Decodable {
+public struct AccountBalance: Decodable, Sendable {
     public let accountId: String
     public let accountNumber: String
     public let balance: Decimal

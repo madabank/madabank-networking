@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Transaction: Codable {
+public struct Transaction: Codable, Sendable {
     public let id: String
     public let fromAccountId: String?
     public let toAccountId: String?
@@ -20,7 +20,7 @@ public struct Transaction: Codable {
     }
 }
 
-public enum TransactionType: String, Codable {
+public enum TransactionType: String, Codable, Sendable {
     case transfer
     case deposit
     case withdrawal
@@ -37,7 +37,7 @@ public enum TransactionType: String, Codable {
     }
 }
 
-public enum TransactionStatus: String, Codable {
+public enum TransactionStatus: String, Codable, Sendable {
     case pending
     case completed
     case failed
@@ -51,14 +51,14 @@ public enum TransactionStatus: String, Codable {
     }
 }
 
-public struct TransactionListResponse: Decodable {
+public struct TransactionListResponse: Decodable, Sendable {
     public let transactions: [Transaction]
     public let total: Int
     public let limit: Int
     public let offset: Int
 }
 
-public struct GetTransactionsRequest: Encodable {
+public struct GetTransactionsRequest: Encodable, Sendable {
     public let accountId: String
     public let limit: Int?
     public let offset: Int?
@@ -83,7 +83,7 @@ public struct GetTransactionsRequest: Encodable {
     }
 }
 
-public struct TransferRequest: Encodable {
+public struct TransferRequest: Encodable, Sendable {
     public let fromAccountId: String
     public let toAccountId: String
     public let amount: Decimal
@@ -106,7 +106,7 @@ public struct TransferRequest: Encodable {
     }
 }
 
-public struct DepositRequest: Encodable {
+public struct DepositRequest: Encodable, Sendable {
     public let accountId: String
     public let amount: Decimal
     public let idempotencyKey: String
@@ -124,7 +124,7 @@ public struct DepositRequest: Encodable {
     }
 }
 
-public struct WithdrawRequest: Encodable {
+public struct WithdrawRequest: Encodable, Sendable {
     public let accountId: String
     public let amount: Decimal
     public let idempotencyKey: String
@@ -142,7 +142,7 @@ public struct WithdrawRequest: Encodable {
     }
 }
 
-public struct ResolveQRRequest: Encodable {
+public struct ResolveQRRequest: Encodable, Sendable {
     public let qrCode: String
     public init(qrCode: String) { self.qrCode = qrCode }
     
@@ -151,7 +151,7 @@ public struct ResolveQRRequest: Encodable {
     }
 }
 
-public struct QRResolutionResponse: Decodable {
+public struct QRResolutionResponse: Decodable, Sendable {
     public let accountId: String
     public let ownerName: String
     public let currency: String

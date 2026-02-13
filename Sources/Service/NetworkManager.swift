@@ -1,7 +1,7 @@
 import Foundation
 import Alamofire
 
-public class NetworkManager: APIClientProtocol {
+public final class NetworkManager: APIClientProtocol, @unchecked Sendable {
     
     public static let shared = NetworkManager()
     
@@ -12,7 +12,21 @@ public class NetworkManager: APIClientProtocol {
         return Session(interceptor: interceptor)
     }()
     
-    private var accessToken: String?
+    private var _accessToken: String?
+    private let lock = NSLock()
+    
+    public var accessToken: String? {
+        get {
+            lock.lock()
+            defer { lock.unlock() }
+            return _accessToken
+        }
+        set {
+            lock.lock()
+            defer { lock.unlock() }
+            _accessToken = newValue
+        }
+    }
     
     private let mockProvider: MockResponseProviderProtocol = MockResponseProvider()
     
@@ -58,12 +72,12 @@ public class NetworkManager: APIClientProtocol {
         return try await withCheckedThrowingContinuation { continuation in
             session.request(request)
                 .validate()
-                .responseDecodable(of: T.self) { response in
+                .responseDecodable(of: T.self) { [weak self] response in
                     switch response.result {
                     case .success(let data):
                         continuation.resume(returning: data)
                     case .failure(let error):
-                        self.handleError(response.data, error: error, statusCode: response.response?.statusCode, continuation: continuation)
+                        self?.handleError(response.data, error: error, statusCode: response.response?.statusCode, continuation: continuation)
                     }
                 }
         }
@@ -89,12 +103,12 @@ public class NetworkManager: APIClientProtocol {
         return try await withCheckedThrowingContinuation { continuation in
             session.request(request)
                 .validate()
-                .response { response in
+                .response { [weak self] response in
                     switch response.result {
                     case .success:
                         continuation.resume()
                     case .failure(let error):
-                        self.handleError(response.data, error: error, statusCode: response.response?.statusCode, continuation: continuation)
+                        self?.handleError(response.data, error: error, statusCode: response.response?.statusCode, continuation: continuation)
                     }
                 }
         }

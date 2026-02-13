@@ -1,10 +1,10 @@
 import Foundation
 
-public struct CardListResponse: Decodable {
+public struct CardListResponse: Decodable, Sendable {
     public let cards: [Card]
 }
 
-public struct Card: Codable {
+public struct Card: Codable, Sendable {
     public let id: String
     public let accountId: String?
     public let maskedNumber: String?
@@ -24,7 +24,7 @@ public struct Card: Codable {
     }
 }
 
-public enum CardType: String, Codable {
+public enum CardType: String, Codable, Sendable {
     case debit
     case credit
     case virtual
@@ -37,7 +37,7 @@ public enum CardType: String, Codable {
     }
 }
 
-public enum CardStatus: String, Codable {
+public enum CardStatus: String, Codable, Sendable {
     case active
     case blocked
     case cancelled
@@ -51,7 +51,7 @@ public enum CardStatus: String, Codable {
     }
 }
 
-public struct IssueCardRequest: Encodable {
+public struct IssueCardRequest: Encodable, Sendable {
     public let accountId: String
     public let cardHolderName: String
     public let cardType: String
@@ -78,7 +78,7 @@ public struct IssueCardRequest: Encodable {
     }
 }
 
-public struct UpdateCardRequest: Encodable {
+public struct UpdateCardRequest: Encodable, Sendable {
     public let status: String?
     public let dailyLimit: Decimal?
     
@@ -93,7 +93,7 @@ public struct UpdateCardRequest: Encodable {
     }
 }
 
-public struct CardDetailsRequest: Encodable {
+public struct CardDetailsRequest: Encodable, Sendable {
     public let cardId: String
     public let password: String 
     
@@ -108,7 +108,7 @@ public struct CardDetailsRequest: Encodable {
     }
 }
 
-public struct CardDetailsResponse: Decodable {
+public struct CardDetailsResponse: Decodable, Sendable {
     public let cardNumber: String
     public let cvv: String
     public let expiryMonth: Int

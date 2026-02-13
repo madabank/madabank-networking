@@ -1,6 +1,6 @@
 import Foundation
 
-public struct UserProfile: Codable {
+public struct UserProfile: Codable, Sendable {
     public let id: String
     public let email: String
     public let firstName: String
@@ -22,7 +22,7 @@ public struct UserProfile: Codable {
     }
 }
 
-public enum KYCStatus: String, Codable {
+public enum KYCStatus: String, Codable, Sendable {
     case pending
     case verified
     case rejected
@@ -35,7 +35,7 @@ public enum KYCStatus: String, Codable {
     }
 }
 
-public struct UpdateProfileRequest: Encodable {
+public struct UpdateProfileRequest: Encodable, Sendable {
     public let firstName: String?
     public let lastName: String?
     public let phone: String?
