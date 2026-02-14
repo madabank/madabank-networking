@@ -3,9 +3,9 @@ import Alamofire
 
 final class AuthInterceptor: RequestInterceptor {
     
-    private let tokenProvider: () -> String?
+    private let tokenProvider: @Sendable () -> String?
     
-    init(tokenProvider: @escaping () -> String?) {
+    init(tokenProvider: @escaping @Sendable () -> String?) {
         self.tokenProvider = tokenProvider
     }
     
