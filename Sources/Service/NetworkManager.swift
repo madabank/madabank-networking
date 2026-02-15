@@ -47,22 +47,41 @@ public final class NetworkManager: APIClientProtocol, @unchecked Sendable {
     
     public func request<T: Decodable>(_ endpoint: Endpoint) async throws -> T {
         // Mocking Interception
-        if Environment.current.isMockingEnabled {
+        let arguments = ProcessInfo.processInfo.arguments
+        let isUITesting = arguments.contains("--uitesting")
+        let isMockingDisabled = arguments.contains("--disable-mocking")
+        
+        // Priority: 
+        // 1. Force Disable (for real backend test on sim)
+        // 2. Force Enable (for UI test)
+        // 3. Environment default
+        
+        let shouldMock: Bool
+        if isMockingDisabled {
+            shouldMock = false
+        } else if isUITesting {
+            shouldMock = true
+        } else {
+            shouldMock = Environment.current.isMockingEnabled
+        }
+        
+        if shouldMock {
             if let data = mockProvider.mockData(for: endpoint) {
-                // Simulate network delay
-                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s
+                // Simulate network delay (reduced for tests)
+                if !isUITesting {
+                    try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s
+                }
                 do {
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .iso8601
                     return try decoder.decode(T.self, from: data)
                 } catch {
-
+                    debugPrint("NetworkManager: Mock Decoding Error for \(T.self): \(error)")
                     throw APIError.decodingError(error)
                 }
             } else {
+                 debugPrint("NetworkManager: Mock data not found for endpoint: \(endpoint)")
                  // Fallback or error if mock not found
-
-                 // Ideally we might want to throw an error or fall through to network if we wanted mixed mode
                  throw APIError.networkError(NSError(domain: "NetworkManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Mock data not found"]))
             }
         }
@@ -85,16 +104,33 @@ public final class NetworkManager: APIClientProtocol, @unchecked Sendable {
     
     public func requestVoid(_ endpoint: Endpoint) async throws {
         // Mocking Interception
-        if Environment.current.isMockingEnabled {
+        let arguments = ProcessInfo.processInfo.arguments
+        let isUITesting = arguments.contains("--uitesting")
+        let isMockingDisabled = arguments.contains("--disable-mocking")
+        
+        let shouldMock: Bool
+        if isMockingDisabled {
+            shouldMock = false
+        } else if isUITesting {
+             shouldMock = true
+        } else {
+            shouldMock = Environment.current.isMockingEnabled
+        }
+
+        if shouldMock {
              // For void requests, existence of mock data (or just success) is enough
              // We can check if we have a mock file for it if we want to simulate success/failure
              // For now, let's assume success if we are in mock mode for void requests, or check provider
              if mockProvider.mockData(for: endpoint) != nil {
-                 try? await Task.sleep(nanoseconds: 500_000_000)
+                 if !isUITesting {
+                    try? await Task.sleep(nanoseconds: 500_000_000)
+                 }
                  return
              }
              // Fallthrough or return success? Let's return success for now for simple void mocks
-             try? await Task.sleep(nanoseconds: 500_000_000)
+             if !isUITesting {
+                try? await Task.sleep(nanoseconds: 500_000_000)
+             }
              return
         }
         
@@ -115,12 +151,9 @@ public final class NetworkManager: APIClientProtocol, @unchecked Sendable {
     }
     
     private func asURLRequest(_ endpoint: Endpoint) throws -> URLRequestConvertible {
-        if let apiEndpoint = endpoint as? APIEndpoint {
-            return apiEndpoint
-        } else {
-            // If it's a generic Endpoint, we need to construct URLRequest manually (basic support)
-             throw APIError.invalidURL
-        }
+        // Since Endpoint now conforms to URLRequestConvertible, we can just return it.
+        // This bypasses the casting issue (APIError error 0) where APIEndpoint might not match.
+        endpoint
     }
     
     private func handleError<T>(_ data: Data?, error: Error, statusCode: Int?, continuation: CheckedContinuation<T, Error>) {

@@ -50,7 +50,9 @@ public protocol APIClientProtocol {
 
 // MARK: - API Endpoint Protocol
 
-public protocol Endpoint {
+public typealias URLRequestConvertible = Alamofire.URLRequestConvertible
+
+public protocol Endpoint: URLRequestConvertible {
     var baseURL: String { get }
     var path: String { get }
     var method: HTTPMethod { get }
@@ -90,3 +92,51 @@ public typealias Parameters = Alamofire.Parameters
 public typealias ParameterEncoding = Alamofire.ParameterEncoding
 public typealias URLEncoding = Alamofire.URLEncoding
 public typealias JSONEncoding = Alamofire.JSONEncoding
+public typealias JSONParameterEncoder = Alamofire.JSONParameterEncoder
+
+// MARK: - Endpoint Extension
+public extension Endpoint {
+    func asURLRequest() throws -> URLRequest {
+        let url = try baseURL.asURL()
+        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
+        urlRequest.httpMethod = method.rawValue
+        
+        // Headers
+        if let headers = headers {
+            for (key, value) in headers.dictionary {
+                urlRequest.setValue(value, forHTTPHeaderField: key)
+            }
+        }
+        
+        // Body (Encodable)
+        if let body = body {
+            // Note: This relies on Swift's opened existentials or Alamofire support for Encodable existential
+            urlRequest = try JSONParameterEncoder.default.encode(AnyEncodable(body), into: urlRequest)
+        }
+        
+        // Query Parameters (for GET)
+        if let parameters = parameters {
+             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
+        }
+        
+        return urlRequest
+    }
+}
+
+// Helper wrapper for Encodable existential
+struct AnyEncodable: Encodable {
+    let value: Encodable
+
+    init(_ value: Encodable) {
+        self.value = value
+    }
+
+    func encode(to encoder: Encoder) throws {
+        try value.encode(to: encoder)
+    }
+}
+
+// Ensure Endpoint inherits URLRequestConvertible
+public extension Endpoint {
+    // Already conformed via extension method, but protocol inheritance is better
+}

@@ -162,29 +162,5 @@ public enum APIEndpoint: Endpoint {
 }
 
 // Extension to help with Alamofire request creation
-extension APIEndpoint: URLRequestConvertible {
-    public func asURLRequest() throws -> URLRequest {
-        let url = try baseURL.asURL()
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
-        
-        // Headers
-        if let headers = headers {
-            for (key, value) in headers.dictionary {
-                urlRequest.setValue(value, forHTTPHeaderField: key)
-            }
-        }
-        
-        // Body (Encodable)
-        if let body = body {
-            urlRequest = try JSONParameterEncoder.default.encode(body, into: urlRequest)
-        }
-        
-        // Query Parameters (for GET)
-        if let parameters = parameters {
-             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-        }
-        
-        return urlRequest
-    }
-}
+// Now handled by Endpoint default implementation in Networking.swift
+// extension APIEndpoint: URLRequestConvertible { ... }

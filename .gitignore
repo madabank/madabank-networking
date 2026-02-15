@@ -1,39 +1,41 @@
+# macOS
+.DS_Store
+
 # Xcode
+*.xcodeproj
+*.xcworkspace
+build/
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
 xcuserdata/
+*.xccheckout
+*.xcscmblueprint
 *.hmap
 *.ipa
 *.dSYM.zip
 *.dSYM
-timeline.xctimeline
-playground.xcworkspace
 
-# Swift Package Manager
+# Tuist
+Derived/
+
+# Swift PM
 .build/
 .swiftpm/
 Package.resolved
 
-# Tuist Generated
-*.xcodeproj
-*.xcworkspace
-Derived/
-graph.dot
-graph.png
-graph.json
-
-# CocoaPods
-# Pods/
-
-# Carthage
-Carthage/Build/
-
 # Fastlane
 fastlane/report.xml
 fastlane/Preview.html
-fastlane/screenshots/**/*.png
+fastlane/screenshots
 fastlane/test_output
 
-# macOS
-.DS_Store
-._*
-*.xcodeproj
-*.xcworkspace
+vendor/
+.bundle/
